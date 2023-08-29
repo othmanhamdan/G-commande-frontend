@@ -1,0 +1,80 @@
+<ng-container *ngIf="commandeState$ | async as commande" [ngSwitch]="commande.appState">
+<div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <ng-container *ngSwitchCase="'APP_ERROR'">{{ commande.error}}</ng-container>
+          <ng-container *ngSwitchCase="'APP_LOADING'">
+            <div class="d-flex justify-content-center mt-4">
+              <div class="spinner-border" role="status">
+                 <span class="visually hidden"></span> 
+              </div>
+
+            </div>
+          </ng-container>
+          <ng-container *ngSwitchCase="'APP_LOADED'" >
+            <h3 class="text-center">la liste des commandes</h3>
+            <br>
+           <nav class="">
+               <form #searchForm="ngForm" (keyup)="goToPage(searchForm.value.unite,searchForm.value.numero,searchForm.value.libelle,searchForm.value.nom)" class="form-inline">                  
+                    <input name="unite" ngModel class="form-control col-3" type="text" placeholder="Unite">
+                    <input name="numero" ngModel class="form-control col-3" type="text" placeholder="Numero" >
+                    <input name="libelle" ngModel class="form-control col-3" type="text" placeholder="Fournisseur" >
+                    <input name="nom" ngModel class="form-control col-3" type="text" placeholder="Utilisateur">    
+              </form>
+             </nav>
+           <table class="table">
+               <thead>
+                 <tr>
+                   <th scope="col">Numero</th>
+                   <th scope="col">Unite</th>
+                   <th scope="col">Date</th>
+                   <th scope="col">Fournisseur</th>
+                   <th scope="col">Utilisateur</th>
+                   <th scope="col">Montant</th>
+                   <th scope="col">Remise</th>
+                   <th scope="col">Reliquat</th>
+                   <th scope="col">Les Operation</th>
+ 
+                 </tr>
+               </thead>
+               <tbody>
+                 <tr *ngFor="let cmd of commande.appData.content; let i = index ;">
+                   <td>{{ cmd.numero}}</td>
+                   <td>{{ cmd.unite }}</td>
+                   <td>{{ cmd.date | date: 'dd-MM-yyyy'}}</td>
+                   <td>{{ cmd.fournisseur.libelle}}</td>
+                   <td>{{ cmd.utilisateur.nom }} {{ cmd.utilisateur.nom }}  </td>
+                   <td>{{ cmd.id }}</td>
+                   <td>{{ cmd.remise | number: '1.2-2'}}</td>
+                   <td>{{ cmd.reliquat | number: '1.2-2'}}</td>
+                   <td></td>
+                  
+                 </tr>
+               </tbody>
+             </table>
+             <nav aria-label="...">
+               <ul class="pagination justify-content-center">
+                 <li class="page-item " [ngClass]="0 == (currentPage$ | async) ? 'disabled' : 'clickable'">
+                   <a (click)="goToNextOrPreviousPage('backward',searchForm.value.unite,searchForm.value.numero,searchForm.value.libelle,searchForm.value.nom)" class="page-link">Previous</a>
+                 </li>
+                 <li *ngFor="let pageNumber of [].constructor(commande.appData.totalPages); let i = index;" class="page-item clickable"
+                 [ngClass]="i == (currentPage$ | async) ? 'active' : ''">
+                   <a (click)="goToPage(searchForm.value.unite,searchForm.value.numero,searchForm.value.libelle,searchForm.value.nom,i)" class="page-link">
+                    {{i + 1}}
+                    </a>
+                 </li>
+                 <li class="page-item" [ngClass]="(commande.appData.totalPages -1) == (currentPage$ | async) ? 'disabled' : 'clickable'">
+                   <a (click)="goToNextOrPreviousPage('forward',searchForm.value.unite,searchForm.value.numero,searchForm.value.libelle,searchForm.value.nom)" class="page-link">Next</a>
+                 </li>
+               </ul>
+             </nav>
+          </ng-container>
+          
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+

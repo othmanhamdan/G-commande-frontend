@@ -1,0 +1,14 @@
+.color-meni{
+    background-color: #99a3fa;
+}
+.list-group-item-action:hover {
+    background-color: #dee3e7; /* Couleur de votre choix */
+    border-radius: 3px;
+}
+.clickable{
+    cursor: pointer;;
+}
+.list-group-item-action.active {
+    background-color: #007bff; /* Couleur de fond */
+    color: #fff; /* Couleur du texte */
+  }
