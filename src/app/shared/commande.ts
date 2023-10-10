@@ -1,3 +1,9 @@
+import { AppUser } from "./appUser";
+import { Articles } from "./articles";
+import { Facture } from "./facture";
+import { Fournisseur } from "./fournisseur";
+import { TypeCommande } from "./typeCommande";
+
 export class Commande {
      id: number;
      numero: string;
@@ -17,42 +23,12 @@ export class Commande {
      remise: number;
      countable: boolean;
      dateRelanceFacture: Date;
-     typeCommande: TypeCommande;
-     fournisseur: Fournisseur;
-     factures: Facture[];
-     utilisateur: Utilisateur;
+     typeCommande:any = TypeCommande;
+     fournisseur?: Fournisseur;
+     factures?: Facture[];
+     appUser?: AppUser;
+     commandeItems? : Articles[];
   }
-  class TypeCommande{
-    libelle : string
-  }
-  class Fournisseur{
-    id: number;
-    compte: string;
-    libelle: string;
-    commandes: Commande[];
-  }
-  class Facture{
-    id: number;
-    numero: string;
-    dateFacture: Date;
-    montanHT: number;
-    montantTva: number;
-    dateEcheance: Date;
-    dateReglement: Date;
-    dateSaisie: Date;
-    dateReceptionCompta: Date;
-    dateLivraison: Date;
-    receptionSaisie: boolean;
-    commande: Commande;
-  }
-  class Utilisateur{
-    id: number;
-    nom: string;
-    prenom: string;
-    cni: string;
-    e_mail: string;
-    userName: string;
-    commandes: Commande[];
-  }
+
 
  

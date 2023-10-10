@@ -1,0 +1,81 @@
+
+<ng-container *ngIf="articleState$ | async as article" [ngSwitch]="article.appState">
+    <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body">
+              <ng-container *ngSwitchCase="'APP_ERROR'">{{ article.error}}</ng-container>
+              <ng-container *ngSwitchCase="'APP_LOADING'">
+                <div class="d-flex justify-content-center mt-4">
+                  <div class="spinner-border" role="status">
+                     <span class="visually hidden"></span> 
+                  </div>
+    
+                </div>
+              </ng-container>
+              <ng-container *ngSwitchCase="'APP_LOADED'" >
+                <p class="text-center h3">la liste des Articles</p>
+                <br>
+               <nav class="">
+                   <form #searchForm="ngForm" (keyup)="goToPage(searchForm.value.numero,searchForm.value.unite,searchForm.value.libelle,searchForm.value.article,searchForm.value.uniteMesure)" class="form-inline">                  
+                        <input name="numero" ngModel class="form-control col-2 ml-2" type="text" placeholder="N° Commande" >
+                        <input name="unite" ngModel class="form-control col-2 ml-2" type="text" placeholder="Unite" >
+                        <input name="libelle" ngModel class="form-control col-2 ml-2" type="text" placeholder="Fournisseur" >
+                        <input name="article" ngModel class="form-control col-2 ml-2" type="text" placeholder="Article" >
+                        <input name="uniteMesure" ngModel class="form-control col-2 ml-2" type="text" placeholder="Unite de mesure" >
+                    </form>
+                 </nav>
+               <table class="table table-sm">
+                   <thead>
+                     <tr>
+                      <th scope="col">Id</th>
+                       <th scope="col">N° Commande</th>
+                       <th scope="col">Unite</th>
+                       <th scope="col">Date BC</th>
+                       <th scope="col">Fournisseur</th>
+                       <th scope="col">Article</th>
+                       <th scope="col">Unite de mesure</th>
+                       <th scope="col">Quantité</th>
+                       <th scope="col">Prix unitaire</th>
+     
+                     </tr>
+                   </thead>
+                   <tbody>
+                     <tr *ngFor="let art of article.appData.content; let i = index ;">
+                       <td>{{ art.id}}</td>
+                       <td>{{ art.commande.numero}}</td>
+                       <td>{{ art.commande.unite}}</td>
+                       <td>{{ art.commande.date | date: 'dd-MM-yyyy'}}</td>
+                       <td>{{ art.commande.fournisseur.libelle}}</td>
+                       <td>{{ art.article }}</td>
+                       <td>{{ art.uniteMesure }}</td>
+                       <td>{{ art.quantite | number: '1.2-2'}}</td>
+                       <td>{{ art.prixUnitaire | number: '1.2-2'}}</td>                      
+                     </tr>
+                   </tbody>
+                 </table>
+                 <nav aria-label="...">
+                   <ul class="pagination justify-content-center">
+                     <li class="page-item " [ngClass]="0 == (currentPage$ | async) ? 'disabled' : 'clickable'">
+                       <a (click)="goToNextOrPreviousPage('backward',searchForm.value.numero,searchForm.value.unite,searchForm.value.libelle,searchForm.value.article,searchForm.value.uniteMesure)" class="page-link">Previous</a>
+                     </li>
+                     <li *ngFor="let pageNumber of [].constructor(article.appData.totalPages); let i = index;" class="page-item clickable"
+                     [ngClass]="i == (currentPage$ | async) ? 'active' : ''">
+                       <a (click)="goToPage(searchForm.value.numero,searchForm.value.unite,searchForm.value.libelle,searchForm.value.article,searchForm.value.uniteMesure,i)" class="page-link">
+                        {{i + 1}}
+                        </a>
+                     </li>
+                     <li class="page-item" [ngClass]="(article.appData.totalPages -1) == (currentPage$ | async) ? 'disabled' : 'clickable'">
+                       <a (click)="goToNextOrPreviousPage('forward',searchForm.value.numero,searchForm.value.unite,searchForm.value.libelle,searchForm.value.article,searchForm.value.uniteMesure)" class="page-link">Next</a>
+                     </li>
+                   </ul>
+                 </nav>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    
+    
+

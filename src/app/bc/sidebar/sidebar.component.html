@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="col-md-12">
+        <!-- Menu Vertical -->
+        <nav class="nav flex-column">
+            <ul class="nav-link border color-meni list-group px-5 h5">Commande</ul>
+                <li routerLink="/bc/addCommande" class="list-group-item-action clickable py-1 pl-3">Creation</li>
+                <li routerLink="/bc/list" class="list-group-item-action clickable py-1 pl-3">Liste</li>
+                <li routerLink="/bc/bcNonCloturer" class="list-group-item-action clickable py-1 pl-3">Bc Non Cloturés</li>
+            <ul class="nav-link border color-meni list-group px-5 h5">Facture</ul>
+                <li routerLink="/bc/factureEchues" class="list-group-item-action clickable py-1 pl-3">Facture Echues</li>
+                <li routerLink="/bc/factureReglee" class="list-group-item-action clickable py-1 pl-3">Facture regleés</li>
+            
+            <ul class="nav-link border color-meni list-group px-5 h5">Import</ul>
+                <li routerLink="/bc/listImport" class="list-group-item-action clickable py-1 pl-3">Confirmation réception</li>
+                <li routerLink="/bc/suiviImport" class="list-group-item-action clickable py-1 pl-3">Suivi</li>
+            <ul class="nav-link border color-meni list-group px-5 h5">Article</ul>
+            <li routerLink="/bc/listArticle" class="list-group-item-action clickable py-1 pl-3">liste</li>
+            <ul class="nav-link border color-meni list-group px-5 h5">Fournisseur</ul>
+            <li routerLink="/bc/addFournisseur" class="list-group-item-action clickable py-1 pl-3">Creation</li>
+            <li routerLink="/bc/listFournisseur" class="list-group-item-action clickable py-1 pl-3">Liste</li>
+            <ul class="nav-link border color-meni list-group px-5 h5">Utilisateur</ul>
+            <li *ngIf="isLogged" routerLink="/bc/addUser" class="list-group-item-action clickable py-1 pl-3">Créer Utilisateur</li>
+            <li *ngIf="isLogged" routerLink="/bc/addRole" class="list-group-item-action clickable py-1 pl-3">Créer Role</li>
+            <li *ngIf="isLogged" routerLink="/bc/listUser" class="list-group-item-action clickable py-1 pl-3">Liste</li>
+            <li *ngIf="isLogged" routerLink="/bc/addRoleToUser" class="list-group-item-action clickable py-1 pl-3">Gérez les utilisateurs</li>
+            <li (click)="logout()" class="list-group-item-action clickable py-1 pl-3">Déconnecter</li>
+            
+        </nav>
+    </div>
+</div>

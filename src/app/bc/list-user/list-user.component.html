@@ -1,0 +1,71 @@
+
+<ng-container *ngIf="appUserState$ | async as appUser" [ngSwitch]="appUser.appState">
+    <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body">
+              <ng-container *ngSwitchCase="'APP_ERROR'">{{ appUser.error}}</ng-container>
+              <ng-container *ngSwitchCase="'APP_LOADING'">
+                <div class="d-flex justify-content-center mt-4">
+                  <div class="spinner-border" role="status">
+                     <span class="visually hidden"></span> 
+                  </div>
+    
+                </div>
+              </ng-container>
+              <ng-container *ngSwitchCase="'APP_LOADED'" >
+                <p class="text-center h3">la liste des Utilisateurs</p>               
+               <table class="table table-sm">
+                   <thead>
+                     <tr>
+                       <th scope="col">Id</th>
+                       <th scope="col">nom</th>
+                       <th scope="col">prenom</th>
+                       <th scope="col">cni</th>
+                       <th scope="col">E_mail</th>
+                       <th scope="col">User Name</th>
+                       <th scope="col">les Operations</th>
+                   </thead>
+                   <tbody>
+                     <tr *ngFor="let appUser of appUser.appData.content; let i = index ;">
+                       <td>{{ appUser.id}}</td>
+                       <td>{{ appUser.nom}}</td>
+                       <td>{{ appUser.prenom}}</td>
+                       <td>{{ appUser.cni}}</td>
+                       <td>{{ appUser.e_mail}}</td>
+                       <td>{{ appUser.userName}}</td>
+                       <td> 
+                            <button class="btn btn-outline-secondary material-icons ml-2">
+                            mode_edit
+                            </button>
+                        </td>                    
+                     </tr>
+                   </tbody>
+                 </table>
+                 <nav aria-label="...">
+                   <ul class="pagination justify-content-center">
+                     <li class="page-item " [ngClass]="0 == (currentPage$ | async) ? 'disabled' : 'clickable'">
+                       <a (click)="goToNextOrPreviousPage('backward')" class="page-link">Previous</a>
+                     </li>
+                     <li *ngFor="let pageNumber of [].constructor(appUser.appData.totalPages); let i = index;" class="page-item clickable"
+                     [ngClass]="i == (currentPage$ | async) ? 'active' : ''">
+                       <a (click)="goToPage(i)" class="page-link">
+                        {{i + 1}}
+                        </a>
+                     </li>
+                     <li class="page-item" [ngClass]="(appUser.appData.totalPages -1) == (currentPage$ | async) ? 'disabled' : 'clickable'">
+                       <a (click)="goToNextOrPreviousPage('forward')" class="page-link">Next</a>
+                     </li>
+                   </ul>
+                 </nav>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    
+    
+
+
+

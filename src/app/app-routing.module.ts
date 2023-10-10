@@ -1,17 +1,21 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { BcNonCloturerComponent } from './component/bc-non-cloturer/bc-non-cloturer.component';
-import { AddCommandeComponent } from './component/add-commande/add-commande.component';
-import { ListCommandeComponent } from './component/list-commande/list-commande.component';
+import { PageNotFoundComponent } from './bc/page-not-found/page-not-found.component';
+import { AuthGuard } from './helpers/auth.guard';
+
 
 const routes: Routes = [
-  {path : 'addCommande', component : AddCommandeComponent},
-  {path : '', component : ListCommandeComponent},
-  {path : 'bcNonCloturer', component : BcNonCloturerComponent}
+  
+  {path : 'bc', loadChildren : () => import('./auth/auth.module')
+      .then(m => m.AuthModule)},
+  {path : 'bc' , loadChildren : () => import('./bc/bc.module')
+      .then(m => m.BcModule), canActivate : [AuthGuard]},
+  {path : '**', component : PageNotFoundComponent},
+
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -1,0 +1,252 @@
+<h2 class="text-center">Import</h2>
+<div class="row">
+
+  <form #searchForm="ngForm" class="form-inline" >
+    <div class="col-md-2 pl-0">
+      <div class="card">
+            <div class="card-body">
+                <p class="custom-underline">Date Facture</p>
+                <div class="form-group ">
+                  <input 
+                  name="dateDebut" 
+                  ngModel 
+                  type="date" 
+                  class="form-control " 
+                  placeholder="Date debut"
+                  #dateDebut="ngModel"
+                  required
+                  [ngClass]="{'is-invalid' : dateDebut.errors && dateDebut.touched}"
+              >
+              <div [hidden]="!dateDebut.errors?.required" class="invalid-feedback">
+                date Debut is required
+              </div>
+                </div><br/>
+                <div class="form-group">
+                  <input 
+                  name="dateFin" 
+                  ngModel 
+                  type="date" 
+                  class="form-control"
+                   placeholder="Date fin"
+                   #dateFin="ngModel"
+                  required
+                  [ngClass]="{'is-invalid' : dateFin.errors && dateFin.touched}"
+              >
+              <div [hidden]="!dateFin.errors?.required" class="invalid-feedback">
+                date Fin is required
+              </div>
+                </div>
+            </div>
+            
+      </div>
+      
+    </div>
+    <div class="col-md-2 pl-0">
+      <div class="card h-100">
+            <div class="card-body heightdeInput">
+                <p class="custom-underline">Récéption en stocks</p><br/>
+                <div class="form-check">
+                  <div class="">
+                  <input 
+                  ngModel 
+                  value="true" 
+                  class="form-check-input" 
+                  type="radio" 
+                  name="recepEnstock" 
+                  id="flexRadioDefault1" 
+                  checked
+                  #recepEnstock="ngModel"
+                  required
+                  [ngClass]="{'is-invalid' : recepEnstock.errors && recepEnstock.touched}"
+                  >
+                  <div [hidden]="!recepEnstock.errors?.required" class="invalid-feedback">
+                    recep En stock is required
+                   </div>
+                  <label class="form-check-label" for="flexRadioDefault1">
+                    Reçue 
+                  </label>
+                </div><br/>
+                <div class="">
+                  <input 
+                  ngModel 
+                  class="form-check-input" 
+                  type="radio" value="false" 
+                  name="recepEnstock" 
+                  id="flexRadioDefault2"
+                  #recepEnstock="ngModel"
+                  required
+                  [ngClass]="{'is-invalid' : recepEnstock.errors && recepEnstock.touched}"
+                  >
+                  <div [hidden]="!recepEnstock.errors?.required" class="invalid-feedback">
+                    recep En stock is required
+                   </div>
+                  <label class="form-check-label" for="flexRadioDefault2">
+                    Non reçue
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+      </div>
+      
+    </div>
+    <div class="col-md-2 pl-0">
+      <div class="card h-100">
+            <div class="card-body heightdeInput">
+                <p class="custom-underline">Récéption en cpt</p><br/>
+                <div class="form-check">
+                <div class="">
+                  <input 
+                  ngModel 
+                  class="form-check-input dateFacture" 
+                  type="radio" 
+                  value="true" 
+                  name="recepEnctp" 
+                  id="flexRadioDefault3" 
+                  checked 
+                  #recepEnctp="ngModel"
+                  required
+                  [ngClass]="{'is-invalid' : recepEnctp.errors && recepEnctp.touched}"
+                  >
+                  <div [hidden]="!recepEnctp.errors?.required" class="invalid-feedback">
+                    recep En ctp is required
+                   </div>
+                  <label class="form-check-label" for="flexRadioDefault3">
+                    Reçue
+                  </label>
+                </div><br/>
+                <div class="">
+                  <input ngModel class="form-check-input dateFacture" type="radio" value="false" name="recepEnctp" id="flexRadioDefault4">
+                  <label class="form-check-label" for="flexRadioDefault4">
+                    Non reçue
+                  </label>
+                </div>
+              </div>
+            </div>
+            
+      </div>
+      
+    </div>
+
+    <div class="col-md-3 pl-0">
+      <div class="card h-100">
+            <div class="card-body heightdeInput">
+                <p class="custom-underline">Fournisseur</p><br>
+                <div class="form-group ">
+                  <input name="fournisseur" ngModel type="text" class="form-control " placeholder="Fournisseur">
+                </div>
+            </div>
+            
+      </div>
+      
+    </div>
+    <div class="col-md-2 pl-0">
+      <div class="card h-100">
+            <div class="card-body heightdeInput">
+                <p class="custom-underline">N° facture</p><br>
+                <div class="form-group">
+                  <input name="numero" ngModel type="text" class="form-control formFacture" placeholder="N° facture">
+                </div>
+            </div>
+            
+      </div>
+      
+    </div>
+    <div class="col-md-1 pl-0">
+      <div class="card h-100">
+            <div class="card-body heightdeInput">
+                <div class="form-group">
+                  <button (click)="goToPage(searchForm.value.dateDebut,searchForm.value.dateFin,searchForm.value.recepEnstock,searchForm.value.recepEnctp,searchForm.value.libelle,searchForm.value.numero)" [disabled]="!searchForm.valid" class="btn btn-outline-primary mr-3">Filter</button>
+                </div><br/>
+                <div class="form-group">
+                  <button (click)="getCommandes()" class="btn btn-outline-success">Clear</button>
+                </div>
+            </div>
+            
+      </div>
+      
+    </div>
+  </form>
+
+
+
+
+
+
+
+
+    
+<ng-container *ngIf="factureImport$ | async as facture" [ngSwitch]="facture.appState">
+
+
+      <div class="col-md-12 pl-0">
+        <div class="card">
+          <div class="card-body">
+            <ng-container *ngSwitchCase="'APP_ERROR'">{{ facture.error}}</ng-container>
+            <ng-container *ngSwitchCase="'APP_LOADING'">
+              <div class="d-flex justify-content-center mt-4">
+                <div class="spinner-border" role="status">
+                   <span class="visually hidden"></span> 
+                </div>
+  
+              </div>
+            </ng-container>
+            <ng-container *ngSwitchCase="'APP_LOADED'" >
+             <table class="table table-sm">
+                 <thead>
+                   <tr>
+                    <th scope="col">Id</th>
+                     <th scope="col" class="col-2">N° Facture</th>
+                     <th scope="col" class="col-2">Fournisseur</th>
+                     <th scope="col" class="col-2">Unite</th>
+                     <th scope="col" class="col-2">Date Facture</th>
+                     <th scope="col" class="col-2">Montant TTC</th>
+                     <th scope="col" class="col-md-10">les Opérations</th>
+   
+                   </tr>
+                 </thead>
+                 <tbody>
+                   <tr *ngFor="let fac of facture.appData.content; let i = index ;">
+                     <td>{{ fac.id}}</td>
+                     <td>{{ fac.numero}}</td>
+                     <td>{{ fac.commande.fournisseur.libelle}}</td>
+                     <td>{{ fac.commande.unite}}</td>
+                     <td>{{ fac.dateFacture | date: 'dd-MM-yyyy'}}</td>
+                     <td>{{ fac.montantTTC | number: '1.2-2'}}</td>
+                     <td>
+                        <button (click)="confirme(fac)" *ngIf="!fac.receptionSaisie"  title="Reglée" class="btn btn-outline-danger">
+                          Confirmer Reception
+                        </button>
+                        <p class="text-success" *ngIf="fac.receptionSaisie">Reception confirmrée</p>
+                      </td>
+                    
+                   </tr>
+                 </tbody>
+               </table>
+               <nav aria-label="...">
+                 <ul class="pagination justify-content-center">
+                   <li class="page-item " [ngClass]="0 == (currentPage$ | async) ? 'disabled' : 'clickable'">
+                     <a (click)="goToNextOrPreviousPage('backward',searchForm.value.dateDebut,searchForm.value.dateFin,searchForm.value.recepEnstock,searchForm.value.recepEnctp,searchForm.value.libelle,searchForm.value.numero)" class="page-link">Previous</a>
+                   </li>
+                   <li *ngFor="let pageNumber of [].constructor(facture.appData.totalPages); let i = index;" class="page-item clickable"
+                   [ngClass]="i == (currentPage$ | async) ? 'active' : ''">
+                     <a (click)="goToPage(searchForm.value.dateDebut,searchForm.value.dateFin,searchForm.value.recepEnstock,searchForm.value.recepEnctp,searchForm.value.libelle,searchForm.value.numero,i)" class="page-link">
+                      {{i + 1}}
+                      </a>
+                   </li>
+                   <li class="page-item" [ngClass]="(facture.appData.totalPages -1) == (currentPage$ | async) ? 'disabled' : 'clickable'">
+                     <a (click)="goToNextOrPreviousPage('forward',searchForm.value.dateDebut,searchForm.value.dateFin,searchForm.value.recepEnstock,searchForm.value.recepEnctp,searchForm.value.libelle,searchForm.value.numero)" class="page-link">Next</a>
+                   </li>
+                 </ul>
+               </nav>
+            </ng-container>
+            
+            
+          </div>
+        </div>
+      </div>
+  </ng-container>
+  
+  
+
+</div>

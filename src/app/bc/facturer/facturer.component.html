@@ -1,0 +1,117 @@
+<h2 class="text-center">Facturer</h2>
+<div class="row">
+    <div class="col-md-12">
+      <div class="card">
+            <div class="card-body">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Numero</th>
+                            <th>Unite </th>
+                            <th>Date</th>
+                            <th>Fournisseur</th>
+                            <th>Montant</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{commande.numero}}</td>
+                            <td>{{commande.unite}}</td>
+                            <td>{{commande.date | date: 'dd-MM-yyyy'}}</td>
+                            <td>{{commande.fournisseur.libelle}}</td>
+                            <td>{{calculateTotal() | number : '1.2-2'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="text-center h3">Montant restant : {{ commande.reliquat | number : '1.2-2'}}</p>
+                <form #formFacture="ngForm" (ngSubmit)="save()">
+                    <div class="form-row">
+                        <div class="col-6">
+                            <label >Numero</label>
+                            <input placeholder="numero"
+                            type="text" 
+                            class="form-control" 
+                            name="numero"
+                            [(ngModel)]="facture.numero"
+                            #numero="ngModel"
+                            required
+                            [ngClass]="{'is-invalid' : numero.errors && numero.touched}"
+                            >
+                            <div [hidden]="!numero.errors?.required" class="invalid-feedback">
+                            Numero is required
+                            </div>
+                        </div>
+                      <div class="col-6 pb-1">
+                        <label >Date Livraison</label>
+                        <input placeholder="date Livraison"
+                            type="date" 
+                            class="form-control" 
+                            name="dateLivraison"
+                            [(ngModel)]="facture.dateLivraison"
+                            #dateLivraison="ngModel"
+                            required
+                            [ngClass]="{'is-invalid' : dateLivraison.errors && dateLivraison.touched}"
+                        >
+                        <div [hidden]="!dateLivraison.errors?.required" class="invalid-feedback">
+                            date Livraison is required
+                        </div>
+                      </div>
+                      <div class="col-6 pb-1">
+                        <label >Date Facture</label>
+                        <input placeholder="date Facture"
+                            type="date" 
+                            class="form-control" 
+                            name="dateFacture"
+                            [(ngModel)]="facture.dateFacture"
+                            #dateFacture="ngModel"
+                            required
+                            [ngClass]="{'is-invalid' : dateFacture.errors && dateFacture.touched}"
+                        >
+                        <div [hidden]="!dateFacture.errors?.required" class="invalid-feedback">
+                            Article is required
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <label >Montan HT</label>
+                        <input placeholder="montan HT"
+                            type="number" 
+                            class="form-control" 
+                            name="montanHT"
+                            [(ngModel)]="facture.montanHT"
+                            #montanHT="ngModel"
+                            required
+                            [ngClass]="{'is-invalid' : montanHT.errors && montanHT.touched}"
+                            >
+                            <div [hidden]="!montanHT.errors?.required" class="invalid-feedback">
+                                Montant HT is required
+                            </div>
+                        </div>
+                      
+                        <div class="col-6 pb-1">
+                        <label>Montant Tva</label>
+                        <input placeholder="montant Tva"
+                            type="number" 
+                            class="form-control" 
+                            name="montantTva"
+                            [(ngModel)]="facture.montantTva"
+                            #montantTva="ngModel"
+                            required
+                            [ngClass]="{'is-invalid' : montantTva.errors && montantTva.touched}"
+                        >
+                            <div [hidden]="!montantTva.errors?.required" class="invalid-feedback">
+                                montant Tva is required
+                            </div>
+                        </div>
+                        
+                    </div> 
+                    <div class=" text-right mt-4">
+                         <button type="submit" [disabled]="!formFacture.valid" class="btn btn-success btn-block">Save</button>
+                    </div>
+                  </form>
+                    <div>
+                        <button (click)="closed()" class="btn btn-danger btn-block mt-3">Fermer</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>

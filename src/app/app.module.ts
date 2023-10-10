@@ -1,38 +1,30 @@
-import { BrowserModule } from '@angular/platform-browser';
+
 import { NgModule } from '@angular/core';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavbarComponent } from './component/navbar/navbar.component';
-import { SidebarComponent } from './component/sidebar/sidebar.component';
-import { BcNonCloturerComponent } from './component/bc-non-cloturer/bc-non-cloturer.component';
-import { CommandesService } from './services/commandes.service';
+import { AppRoutingModule } from './app-routing.module';
+import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { AddCommandeComponent } from './component/add-commande/add-commande.component';
-import { ListCommandeComponent } from './component/list-commande/list-commande.component';
-import { FormsModule } from '@angular/forms';
-import { Ng2SearchPipeModule } from 'ng2-search-filter';
-import { SearchfilterPipe } from './searchfilter.pipe';
+import { PageNotFoundComponent } from './bc/page-not-found/page-not-found.component';
+import { TokenInterceptorProvider } from './helpers/token.interceptor';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DatePipe } from '@angular/common';
+
+
+
 
 @NgModule({
   declarations: [
-    AppComponent,
-    NavbarComponent,
-    SidebarComponent,
-    BcNonCloturerComponent,
-    AddCommandeComponent,
-    ListCommandeComponent,
-    SearchfilterPipe
+    AppComponent,    
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule,
-    Ng2SearchPipeModule
-
+    BrowserAnimationsModule,
   ],
-  providers: [CommandesService],
+  providers: [TokenInterceptorProvider,DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

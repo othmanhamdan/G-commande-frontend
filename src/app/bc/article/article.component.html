@@ -1,0 +1,106 @@
+<h2 class="text-center">Ajouter des Articles</h2>
+<div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="text-center">N° de Commande : {{commande.numero}}</h1>
+          
+          <br>
+          <form #formArticle="ngForm" (ngSubmit)="onSubmit()">
+            <div class="form-row">
+              <div class="col-6 pb-1">
+                <label >Ref Article</label>
+                <input placeholder="Ref Article"
+                    type="text" 
+                    class="form-control" 
+                    name="referenceArticle"
+                    [(ngModel)]="articles.referenceArticle"
+                    #referenceArticle="ngModel"
+                    required
+                    [ngClass]="{'is-invalid' : referenceArticle.errors && referenceArticle.touched}"
+                >
+                <div [hidden]="!referenceArticle.errors?.required" class="invalid-feedback">
+                    Ref Article is required
+                </div>
+              </div>
+              <div class="col-6 pb-1">
+                <label >Article</label>
+                <input placeholder="Article"
+                    type="text " 
+                    class="form-control" 
+                    name="article"
+                    [(ngModel)]="articles.article"
+                    #article="ngModel"
+                    required
+                    [ngClass]="{'is-invalid' : article.errors && article.touched}"
+                >
+                <div [hidden]="!article.errors?.required" class="invalid-feedback">
+                    Article is required
+                </div>
+              </div>
+              <div class="col-6">
+                <label >Unite Mesure</label>
+                <input placeholder="Unite Mesure"
+                    type="text" 
+                    class="form-control" 
+                    name="uniteMesure"
+                    [(ngModel)]="articles.uniteMesure"
+                    #uniteMesure="ngModel"
+                    required
+                    [ngClass]="{'is-invalid' : uniteMesure.errors && uniteMesure.touched}"
+                    >
+                    <div [hidden]="!uniteMesure.errors?.required" class="invalid-feedback">
+                        Unite Mesure is required
+                    </div>
+                </div>
+              
+                <div class="col-6 pb-1">
+                <label >Quantite</label>
+                <input placeholder="Quantite"
+                    type="number" 
+                    class="form-control" 
+                    name="quantite"
+                    [(ngModel)]="articles.quantite"
+                    #quantite="ngModel"
+                    required
+                    [ngClass]="{'is-invalid' : quantite.errors && quantite.touched}"
+                >
+                    <div [hidden]="!quantite.errors?.required" class="invalid-feedback">
+                        Quantite is required
+                    </div>
+                </div>
+                <div class="col-6">
+                    <label >Prix Unitaire</label>
+                    <input placeholder="Prix Unitaire"
+                    type="number" 
+                    class="form-control" 
+                    name="prixUnitaire"
+                    [(ngModel)]="articles.prixUnitaire"
+                    #prixUnitaire="ngModel"
+                    required
+                    [ngClass]="{'is-invalid' : prixUnitaire.errors && prixUnitaire.touched}"
+                    >
+                    <div [hidden]="!prixUnitaire.errors?.required" class="invalid-feedback">
+                    Prix Unitaire required
+                    </div>
+                </div>
+            </div> 
+            <div class=" text-right mt-4">
+                 <button type="submit" [disabled]="!formArticle.valid" class="btn btn-success btn-block">Save</button>
+            </div>
+          </form>
+          <div>
+            <button (click)="closed()" class="btn btn-danger btn-block mt-3">close</button>
+          </div>
+           
+        
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+
+
+
+
+

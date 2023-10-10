@@ -1,0 +1,73 @@
+
+<ng-container *ngIf="supplierState$ | async as supplier" [ngSwitch]="supplier.appState">
+    <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body">
+              <ng-container *ngSwitchCase="'APP_ERROR'">{{ supplier.error}}</ng-container>
+              <ng-container *ngSwitchCase="'APP_LOADING'">
+                <div class="d-flex justify-content-center mt-4">
+                  <div class="spinner-border" role="status">
+                     <span class="visually hidden"></span> 
+                  </div>
+    
+                </div>
+              </ng-container>
+              <ng-container *ngSwitchCase="'APP_LOADED'" >
+                <p class="text-center h3">la liste des Fournisseurs</p>
+                <br>
+               <nav class="">
+                   <form #searchForm="ngForm" (keyup)="goToPage(searchForm.value.libelle)" class="form-inline">       
+                        <input name="libelle" ngModel class="form-control col-2 ml-2" type="text" placeholder="Fournisseur" >
+                    </form>
+                 </nav>
+               <table class="table table-sm">
+                   <thead>
+                     <tr>
+                       <th scope="col">Id</th>
+                       <th scope="col">Compte</th>
+                       <th scope="col">libelle</th>
+                       <th scope="col">les Operations</th>
+                   </thead>
+                   <tbody>
+                     <tr *ngFor="let supplier of supplier.appData.content; let i = index ;">
+                       <td>{{ supplier.id}}</td>
+                       <td class="col-4">{{ supplier.compte}}</td>
+                       <td>{{ supplier.libelle}}</td>
+                       <td> 
+                            <button class="btn btn-outline-secondary material-icons ml-2">
+                            mode_edit
+                            </button>
+                            
+                        </td>                    
+                     </tr>
+                   </tbody>
+                 </table>
+                 <nav aria-label="...">
+                   <ul class="pagination justify-content-center">
+                     <li class="page-item " [ngClass]="0 == (currentPage$ | async) ? 'disabled' : 'clickable'">
+                       <a (click)="goToNextOrPreviousPage('backward',searchForm.value.libelle)" class="page-link">Previous</a>
+                     </li>
+                     <li *ngFor="let pageNumber of [].constructor(supplier.appData.totalPages); let i = index;" class="page-item clickable"
+                     [ngClass]="i == (currentPage$ | async) ? 'active' : ''">
+                       <a (click)="goToPage(searchForm.value.libelle,i)" class="page-link">
+                        {{i + 1}}
+                        </a>
+                     </li>
+                     <li class="page-item" [ngClass]="(supplier.appData.totalPages -1) == (currentPage$ | async) ? 'disabled' : 'clickable'">
+                       <a (click)="goToNextOrPreviousPage('forward',searchForm.value.libelle)" class="page-link">Next</a>
+                     </li>
+                   </ul>
+                 </nav>
+              </ng-container>
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    
+    
+
+

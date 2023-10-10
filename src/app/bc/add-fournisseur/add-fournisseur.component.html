@@ -1,0 +1,57 @@
+<div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="text-center">Ajouter des Fournisseurs</h1>
+          <br>
+          <form #formClient="ngForm" (ngSubmit)="onSubmit()">
+            <div class="form-row">
+              <div class="col-4">
+                <label for="compte">Compte</label>
+                <input placeholder="compte"
+                    type="text" 
+                    class="form-control" 
+                    name="compte"
+                    [(ngModel)]="fournisseur.compte"
+                    #compte="ngModel"
+                    required
+                    maxlength="24"
+                    minlength="24"
+                    [ngClass]="{'is-invalid' : compte.errors && compte.touched}"
+                >
+                <div [hidden]="!compte.errors?.required" class="invalid-feedback">
+                    Compte is required
+                </div>
+              </div>
+             
+              <div class="col-4 pb-1">
+                <label for="libelle">libelle</label>
+                <input placeholder="libelle"
+                    type="text" 
+                    class="form-control" 
+                    name="libelle"
+                    [(ngModel)]="fournisseur.libelle"
+                    #libelle="ngModel"
+                    required
+                    [ngClass]="{'is-invalid' : libelle.errors && libelle.touched}"
+                >
+                <div [hidden]="!libelle.errors?.required" class="invalid-feedback">
+                    libelle is required
+                </div>
+              </div>
+            </div>
+            <div class=" text-right">
+                 <button type="submit" [disabled]="!formClient.valid" class="btn btn-success">Save</button>
+            </div>
+          </form>
+           
+        
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+

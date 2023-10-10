@@ -1,0 +1,22 @@
+<br/><br/><br/><br/><br/><br/>
+<div class="container col-md-3 mt-5">
+  <div class="alert alert-danger" *ngIf="erorr === 403">
+    Nom d'utilisateur ou Mot de passe incorrect
+  </div>
+    <h2>Connexion</h2>
+   
+    <form #formLogin="ngForm" (ngSubmit)="onSubmit()">
+      
+      <div class="form-group">
+        <label for="username">Nom d'utilisateur</label>
+        <input type="text" id="username" required="" name="username" [(ngModel)]="user.userName" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" required="" name="password" [(ngModel)]="user.password" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="!formLogin.valid">Se connecter</button>
+    </form>
+  </div>
+
+

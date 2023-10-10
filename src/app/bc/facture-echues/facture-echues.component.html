@@ -1,0 +1,88 @@
+
+<ng-container *ngIf="factureState$ | async as facture" [ngSwitch]="facture.appState">
+
+    <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-body">
+              <ng-container *ngSwitchCase="'APP_ERROR'">{{ facture.error}}</ng-container>
+              <ng-container *ngSwitchCase="'APP_LOADING'">
+                <div class="d-flex justify-content-center mt-4">
+                  <div class="spinner-border" role="status">
+                     <span class="visually hidden"></span> 
+                  </div>
+    
+                </div>
+              </ng-container>
+              <ng-container *ngSwitchCase="'APP_LOADED'" >
+                <p class="text-center h3">la liste des Factures Echues</p>
+                <br>
+               <nav class="">
+                   <form #searchForm="ngForm" (keyup)="goToPage(searchForm.value.numero,searchForm.value.libelle)" class="form-inline">                  
+                        <input name="numero" ngModel class="form-control col-2 ml-2" type="text" placeholder="Numero" >
+                        <input name="libelle" ngModel class="form-control col-2 ml-2" type="text" placeholder="Fournisseur" >
+                        <input hidden name="userName" value="{{appUser.userName}}" class="form-control col-2 ml-2" type="text" >
+                    </form>
+                 </nav>
+               <table class="table table-sm">
+                   <thead>
+                     <tr>
+                      <th scope="col">Id</th>
+                       <th scope="col">Numero</th>
+                       <th scope="col">Fournisseur</th>
+                       <th scope="col">Unite</th>
+                       <th scope="col">Date Facture</th>
+                       <th scope="col">Date Livraison</th>
+                       <th scope="col">Montant TTC</th>
+                       <th scope="col">Date Echéance</th>
+                       <th scope="col">Date saisie</th>
+                       <th scope="col">Les Operations</th>
+     
+                     </tr>
+                   </thead>
+                   <tbody>
+                     <tr *ngFor="let fac of facture.appData.content; let i = index ;">
+                       <td>{{ fac.id}}</td>
+                       <td>{{ fac.numero}}</td>
+                       <td>{{ fac.commande.fournisseur.libelle}}</td>
+                       <td>{{ fac.commande.unite}}</td>
+                       <td>{{ fac.dateFacture | date: 'dd-MM-yyyy'}}</td>
+                       <td>{{ fac.dateLivraison | date: 'dd-MM-yyyy'}}</td>
+                       <td>{{ fac.montantTTC | number: '1.2-2'}}</td>
+                       <td>{{ fac.dateEcheance | date: 'dd-MM-yyyy'}}</td>
+                       <td>{{ fac.dateSaisie | date: 'dd-MM-yyyy'}}</td>
+                       <td>
+                          <button (click)="openRegle(fac)" title="Reglée" class="btn btn-outline-primary">
+                            Reglée
+                          </button>
+                        </td>
+                      
+                     </tr>
+                   </tbody>
+                 </table>
+                 <nav aria-label="...">
+                   <ul class="pagination justify-content-center">
+                     <li class="page-item " [ngClass]="0 == (currentPage$ | async) ? 'disabled' : 'clickable'">
+                       <a (click)="goToNextOrPreviousPage('backward',searchForm.value.numero,searchForm.value.libelle, searchForm.value.userName)" class="page-link">Previous</a>
+                     </li>
+                     <li *ngFor="let pageNumber of [].constructor(facture.appData.totalPages); let i = index;" class="page-item clickable"
+                     [ngClass]="i == (currentPage$ | async) ? 'active' : ''">
+                       <a (click)="goToPage(searchForm.value.numero,searchForm.value.libelle, searchForm.value.userName,i)" class="page-link">
+                        {{i + 1}}
+                        </a>
+                     </li>
+                     <li class="page-item" [ngClass]="(facture.appData.totalPages -1) == (currentPage$ | async) ? 'disabled' : 'clickable'">
+                       <a (click)="goToNextOrPreviousPage('forward',searchForm.value.numero,searchForm.value.libelle , searchForm.value.userName)" class="page-link">Next</a>
+                     </li>
+                   </ul>
+                 </nav>
+              </ng-container>
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    
+    

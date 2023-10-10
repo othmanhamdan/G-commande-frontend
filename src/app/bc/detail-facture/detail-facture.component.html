@@ -1,0 +1,43 @@
+<div class="row">
+    <div class="card col-md-12">
+        <h1 class="text-center">la liste des Factures</h1>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Numéro</th>
+                    <th>Date facture</th>
+                    <th>Date livraison</th>
+                    <th>Montant HT</th>
+                    <th>Montant Tva</th>
+                    <th>Montant TTC</th>
+                    <th>Operations</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let facture of facture">
+                    <td>{{facture.numero}}</td>
+                    <td>{{facture.dateFacture | date: 'dd-MM-yyyy'}}</td>
+                    <td>{{facture.dateLivraison | date: 'dd-MM-yyyy'}}</td>
+                    <td>{{facture.montanHT | number: '1.2-2'}}</td>
+                    <td>{{facture.montantTva | number: '1.2-2'}}</td>
+                    <td>{{facture.montanHT + facture.montantTva | number: '1.2-2'}}</td>
+                    <td>
+                        <button title="Modifier" class="btn btn-outline-secondary material-icons ml-2">
+                            mode_edit
+                        </button>
+                        <button title="Supprimer" class="btn btn-outline-danger material-icons ml-2">
+                            delete
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="text-success h5">Total Monatnt HT : {{calculateTotal() | number: '1.2-2'}}</p>
+        <div>
+            <button class="btn btn-danger btn-block mt-3" mat-dialog-close>Fermer</button>
+        </div>
+    </div>
+    
+
+</div>
+

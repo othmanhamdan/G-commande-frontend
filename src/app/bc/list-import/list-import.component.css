@@ -1,0 +1,13 @@
+.custom-underline {
+    text-decoration: underline;
+    /* Ajoutez d'autres styles personnalisés si nécessaire */
+  }
+  .formFacture{
+    width: 130px;
+  }
+  .dateFacture{
+    width: 120px;
+  }
+  .heightdeInput{
+    height: 168px;
+  }

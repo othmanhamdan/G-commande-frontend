@@ -1,0 +1,114 @@
+
+<ng-container *ngIf="commandeState$ | async as commande" [ngSwitch]="commande.appState">
+
+<div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-body">
+          <ng-container *ngSwitchCase="'APP_ERROR'">{{ commande.error}}</ng-container>
+          <ng-container *ngSwitchCase="'APP_LOADING'">
+            <div class="d-flex justify-content-center mt-4">
+              <div class="spinner-border" role="status">
+                 <span class="visually hidden"></span> 
+              </div>
+
+            </div>
+          </ng-container>
+          <ng-container *ngSwitchCase="'APP_LOADED'" >
+            <p class="text-center h3">la liste des commandes</p>
+            <br>
+           <nav class="">
+               <form #searchForm="ngForm" (keyup)="goToPage(searchForm.value.unite,searchForm.value.numero,searchForm.value.libelle,searchForm.value.nom)" class="form-inline">                  
+                    <input name="unite" ngModel class="form-control col-2 ml-2" type="text" placeholder="Unite">
+                    <input name="numero" ngModel class="form-control col-2 ml-2" type="text" placeholder="Numero" >
+                    <input name="libelle" ngModel class="form-control col-2 ml-2" type="text" placeholder="Fournisseur" >
+                    <input name="nom" ngModel class="form-control col-2 ml-2" type="text" placeholder="Utilisateur">    
+              </form>
+             </nav>
+           <table class="table table-sm">
+               <thead>
+                 <tr>
+                  <th scope="col" >Id</th>
+                   <th scope="col">Numero</th>
+                   <th scope="col">Unite</th>
+                   <th scope="col">Date</th>
+                   <th scope="col" class="col-2">Fournisseur</th>
+                   <th scope="col">Utilisateur</th>
+                   <th scope="col">Montant</th>
+                   <th scope="col">Remise</th>
+                   <th scope="col">Reliquat</th>
+                   <th scope="col">Les Operations</th>
+ 
+                 </tr>
+               </thead>
+               <tbody>
+                 <tr *ngFor="let cmd of commande.appData.content; let i = index ;" >
+                   <td [ngClass]="{'text-danger': calculMontant(cmd) <= 0}">{{ cmd.id}}</td>
+                   <td [ngClass]="{'text-danger': calculMontant(cmd) <= 0}">{{ cmd.numero}}</td>
+                   <td [ngClass]="{'text-danger': calculMontant(cmd) <= 0}">{{ cmd.unite }}</td>
+                   <td [ngClass]="{'text-danger': calculMontant(cmd) <= 0}">{{ cmd.date | date: 'dd-MM-yyyy'}}</td>
+                   <td [ngClass]="{'text-danger': calculMontant(cmd) <= 0}">{{ cmd.fournisseur.libelle}}</td>
+                   <td [ngClass]="{'text-danger': calculMontant(cmd) <= 0}">{{ cmd.appUser.prenom }}  {{ cmd.appUser.nom }}</td>
+                   <td [ngClass]="{'text-danger': calculMontant(cmd) <= 0}">{{ calculMontant(cmd) | number: '1.2-2'}}</td>
+                   <td [ngClass]="{'text-danger': calculMontant(cmd) <= 0}">{{ cmd.remise | number: '1.2-2'}}</td>
+                   <td [ngClass]="{'text-danger': calculMontant(cmd) <= 0}">{{ cmd.reliquat | number: '1.2-2'}}</td>
+                   <td>
+                      <button (click)="openAddArticle(cmd)" [hidden]="cmd.cloture == true" title="Ajouter Article" class="btn btn-outline-dark material-icons ml-2 clickable">
+                        add_comment
+                      </button>
+                      <button [hidden]="cmd.cloture == true" title="Modifier" class="btn btn-outline-secondary material-icons ml-2" routerLink="/bc/commande/edit/{{cmd.id}}">
+                        mode_edit
+                      </button>
+                                           
+                      <button [disabled]="calculMontant(cmd) <= 0" (click)="openDetails(cmd)" [hidden]="cmd.cloture" title="détail" class="btn btn-outline-info material-icons ml-2">
+                        open_in_new
+                      </button>
+                      <button [disabled]="cmd.reliquat < 0" (click)="openFacturer(cmd)" [hidden]="cmd.cloture" title="facturer" class="btn btn-outline-success material-icons ml-2">
+                        event_available
+                      </button>
+                      <button [disabled]="calculMontantHt(cmd) <=0" (click)="openDetailFacture(cmd)" [hidden]="cmd.cloture" title="factures" class="btn btn-outline-primary material-icons ml-2">
+                          receipt_long
+                      </button>
+                      <button [disabled]="calculMontant(cmd) <= 0" [hidden]="cmd.cloture" title="Imprimer BC" class="btn btn-outline-warning material-icons ml-2">
+                        print
+                      </button> 
+                      <button [disabled]="cmd.reliquat != 0" [hidden]="cmd.cloture" (click)="cloturer(cmd)" title="cloture" class="btn btn-outline-primary material-icons ml-2">
+                        power_settings_new
+                      </button>
+                      <button (click)="valider(cmd)" [hidden]="!cmd.cloture" [disabled]="cmd.valide" title="Valider" class="btn btn-outline-success material-icons ml-2">
+                        done
+                      </button>
+                      <button (click)="goToDelete(cmd)" [hidden]="!cmd.cloture" [disabled]="!cmd.valide" title="Supprimer" class="btn btn-outline-danger material-icons ml-2">
+                        delete
+                      </button>
+                    
+                    </td>
+                  
+                 </tr>
+               </tbody>
+             </table>
+             <nav aria-label="...">
+               <ul class="pagination justify-content-center">
+                 <li class="page-item " [ngClass]="0 == (currentPage$ | async) ? 'disabled' : 'clickable'">
+                   <a (click)="goToNextOrPreviousPage('backward',searchForm.value.unite,searchForm.value.numero,searchForm.value.libelle,searchForm.value.nom)" class="page-link">Previous</a>
+                 </li>
+                 <li *ngFor="let pageNumber of [].constructor(commande.appData.totalPages); let i = index;" class="page-item clickable"
+                 [ngClass]="i == (currentPage$ | async) ? 'active' : ''">
+                   <a (click)="goToPage(searchForm.value.unite,searchForm.value.numero,searchForm.value.libelle,searchForm.value.nom,i)" class="page-link">
+                    {{i + 1}}
+                    </a>
+                 </li>
+                 <li class="page-item" [ngClass]="(commande.appData.totalPages -1) == (currentPage$ | async) ? 'disabled' : 'clickable'">
+                   <a (click)="goToNextOrPreviousPage('forward',searchForm.value.unite,searchForm.value.numero,searchForm.value.libelle,searchForm.value.nom)" class="page-link">Next</a>
+                 </li>
+               </ul>
+             </nav>
+          </ng-container>
+          
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+

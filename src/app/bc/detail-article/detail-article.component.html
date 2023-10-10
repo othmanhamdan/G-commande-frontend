@@ -1,0 +1,46 @@
+<div class="row">
+    <div class="card col-md-12">
+        <h1 class="text-center">la liste des Articles</h1>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Ref Article</th>
+                    <th>Article</th>
+                    <th>Unite de Mesure</th>
+                    <th>Quantité</th>
+                    <th>Prix unitaire</th>
+                    <th>Montant</th>
+                    <th>Operations</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let article of article">
+                    <td>{{article.referenceArticle}}</td>
+                    <td>{{article.article}}</td>
+                    <td>{{article.uniteMesure}}</td>
+                    <td>{{article.quantite}}</td>
+                    <td>{{article.prixUnitaire | number: '1.2-2'}}</td>
+                    <td>{{article.montant | number: '1.2-2'}}
+                        
+                    </td>
+                    <td>
+                        <button title="Modifier" class="btn btn-outline-secondary material-icons ml-2">
+                            mode_edit
+                        </button>
+                        <button title="Supprimer" class="btn btn-outline-danger material-icons ml-2">
+                            delete
+                        </button>
+                    </td>
+                    
+                </tr>
+                <p class="text-success h5">Total : {{calculateTotal() | number: '1.2-2'}}</p>
+            </tbody>
+            
+        </table>
+        <div>
+            <button class="btn btn-danger btn-block mt-3" mat-dialog-close>Fermer</button>
+        </div>
+    </div>
+    
+
+</div>
